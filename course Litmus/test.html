@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GSAP ScrollTrigger Navigation</title>
+		<style>
+			body {
+				margin: 0;
+				font-family: Arial, sans-serif;
+			}
+			.navbar {
+				position: fixed;
+				top: 0;
+				width: 100%;
+				background-color: #333;
+				z-index: 1000;
+				display: flex;
+				justify-content: center;
+			}
+			.navbar ul {
+				list-style: none;
+				padding: 0;
+				display: flex;
+			}
+			.nav-item {
+				padding: 10px 20px;
+				color: white;
+				cursor: pointer;
+			}
+			.nav-item.active {
+				background-color: #666;
+			}
+			.content section {
+				height: 100vh;
+				padding: 20px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 2em;
+				background-color: #f0f0f0;
+				border-bottom: 1px solid #ddd;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="navbar">
+			<ul>
+				<li class="nav-item" data-target="#section1">Section 1</li>
+				<li class="nav-item" data-target="#section2">Section 2</li>
+				<li class="nav-item" data-target="#section3">Section 3</li>
+				<li class="nav-item" data-target="#section4">Section 4</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<section id="section1">Content for Section 1</section>
+			<section id="section2">Content for Section 2</section>
+			<section id="section3">Content for Section 3</section>
+			<section id="section4">Content for Section 4</section>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				gsap.registerPlugin(ScrollTrigger)
+
+				const navItems = document.querySelectorAll('.nav-item')
+				const sections = document.querySelectorAll('.content section')
+
+				sections.forEach((section, index) => {
+					ScrollTrigger.create({
+						trigger: section,
+						start: 'top center',
+						end: 'bottom center',
+						onEnter: () => setActiveNavItem(index),
+						onEnterBack: () => setActiveNavItem(index),
+					})
+				})
+
+				function setActiveNavItem(index) {
+					navItems.forEach(item => item.classList.remove('active'))
+					navItems[index].classList.add('active')
+					navItems[index].scrollIntoView({ inline: 'center' })
+				}
+			})
+		</script>
+	</body>
+</html>
